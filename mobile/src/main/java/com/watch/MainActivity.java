@@ -24,6 +24,7 @@ import com.watch.R;
 import java.util.ArrayList;
 import java.util.List;
 
+//adb -d forward tcp:5601 tcp:5601
 public class MainActivity extends Activity implements
         DataApi.DataListener,
         GoogleApiClient.ConnectionCallbacks,

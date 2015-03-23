@@ -59,7 +59,7 @@ public class MainActivity extends Activity implements
     public void onConnected(Bundle bundle) {
         Wearable.DataApi.addListener(mGoogleApiClient, this);
 
-        mTextView.setText("Conection Conected");
+        mTextView.setText("Conection Conected2");
     }
 
     @Override
