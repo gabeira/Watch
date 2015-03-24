@@ -2,6 +2,7 @@ package com.watch;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -10,15 +11,61 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.data.FreezableUtils;
 import com.google.android.gms.wearable.DataEvent;
 import com.google.android.gms.wearable.DataEventBuffer;
+import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.Wearable;
 import com.google.android.gms.wearable.WearableListenerService;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class DataLayerListenerService extends WearableListenerService {
+public class DataLayerListenerService extends WearableListenerService implements
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener {
 
-    private static final String TAG = "DataLayerSample";
+    private static final String TAG = DataLayerListenerService.class.getSimpleName();
+
+    GoogleApiClient googleApiClient;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        Log.d(TAG, "onCreate");
+        googleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(Wearable.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
+        googleApiClient.connect();
+
+    }
+
+    @Override
+    public void onMessageReceived(MessageEvent messageEvent) {
+        super.onMessageReceived(messageEvent);
+        Log.d(TAG, "onMessageReceived: "+ messageEvent);
+    }
+
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        Log.d(TAG, "onConnected");
+        Wearable.MessageApi.addListener(googleApiClient, this);
+        Wearable.DataApi.addListener(googleApiClient, this);
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+
+    }
+
+    ////
+
     private static final String START_ACTIVITY_PATH = "/start-activity";
     private static final String DATA_ITEM_RECEIVED_PATH = "/data-item-received";
 

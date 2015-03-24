@@ -67,6 +67,8 @@ public class MainActivity extends Activity implements
                 .addOnConnectionFailedListener(this)
                 .build();
 
+        mGoogleApiClient.connect();
+
         ((Button) findViewById(R.id.bt)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
